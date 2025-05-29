@@ -10,14 +10,18 @@
       text-align: center;
       padding-top: 100px;
     }
+
     input, button {
       padding: 10px;
       font-size: 18px;
     }
+
     .name {
       margin-top: 30px;
       font-size: 30px;
       color: #2e7d32;
+      opacity: 0;
+      transition: opacity 0.8s ease;
     }
   </style>
 </head>
@@ -48,7 +52,7 @@
       "Quokka", "Quelea", "Quail", "Quassia", "QueenPalm",
       "Rhino", "Ratel", "Rattan", "Rambutan", "RainTree", "Redtail",
       "Sloth", "Snake", "Sunbear", "Sapodilla", "Soursop", "Sugarcane", "Serval",
-      "Tiger", "Tamarin", "Tapir", "Toucan", "Tamarind", "Tortoise", "TrumpetTree",
+      "Tiger", "Tamarin", "Tapir", "Toucan", "Tamarind", "Tortoise", "TrumpetTreeU",
       "Uakari", "Urchin", "UmbrellaTree",
       "Viper", "Vanilla", "Vervet", "Velvetleaf", "Vinegaroon",
       "Warthog", "Weaver", "Wildebeest", "Wildginger", "Wisteria",
@@ -57,22 +61,34 @@
       "Zebra", "Zorilla", "Zebu", "Zinnia", "ZebraPlant"
     ];
 
+    const jungleSound = new Audio('monkey-128368.mp3');
+
     function generateJungleName() {
       const input = document.getElementById('realName').value.trim();
+      const resultEl = document.getElementById('jungleName');
+
       if (!input) {
         alert("Please enter your name.");
         return;
       }
 
       const firstLetter = input[0].toUpperCase();
-
       const matchingWords = jungleWords.filter(word => word[0].toUpperCase() === firstLetter);
 
       const jungleWord = matchingWords.length > 0
         ? matchingWords[Math.floor(Math.random() * matchingWords.length)]
         : jungleWords[Math.floor(Math.random() * jungleWords.length)];
 
-      document.getElementById('jungleName').innerText = `🌴 ${jungleWord} ${input} 🌴`;
+      // Play sound
+      jungleSound.currentTime = 0;
+      jungleSound.play();
+
+      // Animate reveal
+      resultEl.style.opacity = 0;
+      resultEl.innerText = `🌴 ${jungleWord} ${input} 🌴`;
+      setTimeout(() => {
+        resultEl.style.opacity = 1;
+      }, 50);
     }
   </script>
 </body>
