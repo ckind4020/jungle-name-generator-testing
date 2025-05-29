@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jungle Name Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background-color: #e0f7df;
+      text-align: center;
+      padding-top: 100px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 18px;
+    }
+    .name {
+      margin-top: 30px;
+      font-size: 30px;
+      color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌿 What's Your Jungle Name? 🐒</h1>
+  <input type="text" id="realName" placeholder="Enter your name">
+  <button onclick="generateJungleName()">Reveal My Jungle Name</button>
+  <div class="name" id="jungleName"></div>
+
+  <script>
+    const jungleWords = [
+      "Antelope", "Anole", "Amazon", "Acacia", "Agouti", "Aye-aye", "Armadillo",
+      "Baboon", "Bamboo", "Banana", "Bongo", "Boa", "Bushbaby", "Bonobo", "Bromeliad", "Beetle",
+      "Chimp", "Caiman", "Coconut", "Cocoa", "Coffee", "Croton", "Cassowary", "Civet", "Colobus",
+      "Dugong", "Dragonfruit", "Durian", "Draco", "Dungbeetle", "Dahlia",
+      "Elephant", "Eel", "Egret", "Eucalyptus", "Elderberry", "Eland",
+      "Frog", "Fig", "Firefly", "Fiddleleaf", "Fossa", "Flyingfox", "Finch", "FernG",
+      "Gorilla", "Gecko", "Guava", "Gibbon", "Gardenia", "Genet", "Grapefruit",
+      "Hippo", "Hyena", "Hibiscus", "Howler", "Hornbill", "Hoya", "Harpy",
+      "Iguana", "Ibis", "Impala", "Indianstar", "Ixora",
+      "Jaguar", "Jungle", "Jackal", "Jacaranda", "Junglefowl",
+      "Kinkajou", "Kingfisher", "Kapok", "Koala", "Kudu",
+      "Leopard", "Lemur", "Lotus", "Lizard", "Lion", "Lime", "Lantana",
+      "Mango", "Mandrill", "Monstera", "Mongoose", "Mangrove", "Mimosa", "MacaqueN",
+      "Nyala", "Neem", "Nutmeg", "Numbat", "Noni",
+      "Okapi", "Ocelot", "Olive", "Orchid", "Orangutan", "Owl",
+      "Parrot", "Python", "Palm", "Papaya", "Passionfruit", "Plumeria", "Peacock", "Pangolin",
+      "Quokka", "Quelea", "Quail", "Quassia", "QueenPalm",
+      "Rhino", "Ratel", "Rattan", "Rambutan", "RainTree", "Redtail",
+      "Sloth", "Snake", "Sunbear", "Sapodilla", "Soursop", "Sugarcane", "Serval",
+      "Tiger", "Tamarin", "Tapir", "Toucan", "Tamarind", "Tortoise", "TrumpetTree",
+      "Uakari", "Urchin", "UmbrellaTree",
+      "Viper", "Vanilla", "Vervet", "Velvetleaf", "Vinegaroon",
+      "Warthog", "Weaver", "Wildebeest", "Wildginger", "Wisteria",
+      "Xerus", "Xantus", "Xanthosoma",
+      "Yabby", "Yucca", "YlangYlang", "Yellowtail",
+      "Zebra", "Zorilla", "Zebu", "Zinnia", "ZebraPlant"
+    ];
+
+    function generateJungleName() {
+      const input = document.getElementById('realName').value.trim();
+      if (!input) {
+        alert("Please enter your name.");
+        return;
+      }
+
+      const firstLetter = input[0].toUpperCase();
+
+      const matchingWords = jungleWords.filter(word => word[0].toUpperCase() === firstLetter);
+
+      const jungleWord = matchingWords.length > 0
+        ? matchingWords[Math.floor(Math.random() * matchingWords.length)]
+        : jungleWords[Math.floor(Math.random() * jungleWords.length)];
+
+      document.getElementById('jungleName').innerText = `🌴 ${jungleWord} ${input} 🌴`;
+    }
+  </script>
+</body>
+</html>
