@@ -34,6 +34,24 @@
       color: #0b6623;
       margin-top: 40px;
     }
+
+    /* Jungle road and vehicle */
+    #jungleRoad {
+      position: relative;
+      height: 80px;
+      background-color: #c5e1a5;
+      margin-top: 60px;
+      border: 2px dashed #558b2f;
+      overflow: hidden;
+    }
+
+    #vehicle {
+      position: absolute;
+      top: 20px;
+      left: 0%;
+      font-size: 40px;
+      transition: left 0.6s ease;
+    }
   </style>
 </head>
 <body>
@@ -55,6 +73,11 @@
   </div>
 
   <div id="resultScreen" class="hidden"></div>
+
+  <!-- Jungle Road Progress -->
+  <div id="jungleRoad">
+    <div id="vehicle">🛻</div>
+  </div>
 
   <script>
     const jungleWords = [
@@ -135,18 +158,15 @@
       const matches = jungleWords.filter(w => w[0].toUpperCase() === firstLetter);
       jungleName = (matches.length > 0 ? matches[Math.floor(Math.random() * matches.length)] : jungleWords[Math.floor(Math.random() * jungleWords.length)]) + " " + input;
 
-      // Play sound
       jungleSound.currentTime = 0;
       jungleSound.play();
 
-      // Animate name
       resultEl.style.opacity = 0;
       resultEl.innerText = `🌴 ${jungleName} 🌴`;
       setTimeout(() => {
         resultEl.style.opacity = 1;
       }, 50);
 
-      // Show Start button
       setTimeout(() => {
         document.getElementById('startSection').classList.remove('hidden');
         document.getElementById('playerName').innerText = jungleName;
@@ -182,6 +202,8 @@
       }
 
       currentQuestion++;
+      updateVehicleProgress();
+
       if (currentQuestion < questions.length) {
         showQuestion();
       } else {
@@ -195,6 +217,11 @@
       document.getElementById('resultScreen').innerHTML =
         `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
         (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
+    }
+
+    function updateVehicleProgress() {
+      const progressPercent = (currentQuestion / questions.length) * 100;
+      document.getElementById('vehicle').style.left = `${progressPercent}%`;
     }
   </script>
 </body>
