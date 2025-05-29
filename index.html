@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Jungle Name Generator</title>
+  <title>Jungle Driver's Challenge</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: 'Comic Sans MS', cursive;
       background-color: #e0f7df;
       text-align: center;
-      padding-top: 100px;
+      padding: 40px 20px;
     }
-
     input, button {
       padding: 10px;
       font-size: 18px;
     }
-
     .name {
       margin-top: 30px;
       font-size: 30px;
@@ -23,13 +21,40 @@
       opacity: 0;
       transition: opacity 0.8s ease;
     }
+    .hidden { display: none; }
+    .question { font-size: 20px; margin-top: 40px; }
+    .option { margin: 10px 0; }
+    .option button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #resultScreen {
+      font-size: 26px;
+      color: #0b6623;
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
-  <h1>🌿 What's Your Jungle Name? 🐒</h1>
-  <input type="text" id="realName" placeholder="Enter your name">
-  <button onclick="generateJungleName()">Reveal My Jungle Name</button>
-  <div class="name" id="jungleName"></div>
+  <div id="nameSection">
+    <h1>🌿 What's Your Jungle Name? 🐒</h1>
+    <input type="text" id="realName" placeholder="Enter your name">
+    <button onclick="generateJungleName()">Reveal My Jungle Name</button>
+    <div class="name" id="jungleName"></div>
+  </div>
+
+  <div id="startSection" class="hidden">
+    <h2>Welcome, <span id="playerName"></span>!</h2>
+    <p>Are you ready to test your skills in the Jungle Driver's Challenge?</p>
+    <button onclick="startQuiz()">Start the Trek 🚗</button>
+  </div>
+
+  <div id="quizSection" class="hidden">
+    <div id="questionContainer"></div>
+  </div>
+
+  <div id="resultScreen" class="hidden"></div>
 
   <script>
     const jungleWords = [
@@ -61,7 +86,41 @@
       "Zebra", "Zorilla", "Zebu", "Zinnia", "ZebraPlant"
     ];
 
+    const questions = [
+      {
+        question: "When a stop line is present at a stop sign, drivers must:",
+        options: [
+          "a) stop at the line",
+          "b) stop at a point that it is clear to see in all directions",
+          "c) stop only if pedestrians are in the crosswalk"
+        ],
+        answer: 0
+      },
+      {
+        question: "When approaching snow removal equipment, you should:",
+        options: [
+          "a) be aware of restricted visibility",
+          "b) be aware of flying sand and chunks of ice and snow",
+          "c) maintain a following distance of 100 feet",
+          "d) all of the above"
+        ],
+        answer: 3
+      },
+      {
+        question: "When making an emergency roadside stop, you should:",
+        options: [
+          "a) activate your four way flashers before pulling over to the side of the road",
+          "b) shift transmission to proper gear and set parking brake",
+          "c) leave the vehicle running when you exit the vehicle"
+        ],
+        answer: 0
+      }
+    ];
+
     const jungleSound = new Audio('monkey.mp3');
+    let jungleName = "";
+    let currentQuestion = 0;
+    let score = 0;
 
     function generateJungleName() {
       const input = document.getElementById('realName').value.trim();
@@ -73,22 +132,69 @@
       }
 
       const firstLetter = input[0].toUpperCase();
-      const matchingWords = jungleWords.filter(word => word[0].toUpperCase() === firstLetter);
-
-      const jungleWord = matchingWords.length > 0
-        ? matchingWords[Math.floor(Math.random() * matchingWords.length)]
-        : jungleWords[Math.floor(Math.random() * jungleWords.length)];
+      const matches = jungleWords.filter(w => w[0].toUpperCase() === firstLetter);
+      jungleName = (matches.length > 0 ? matches[Math.floor(Math.random() * matches.length)] : jungleWords[Math.floor(Math.random() * jungleWords.length)]) + " " + input;
 
       // Play sound
       jungleSound.currentTime = 0;
       jungleSound.play();
 
-      // Animate reveal
+      // Animate name
       resultEl.style.opacity = 0;
-      resultEl.innerText = `🌴 ${jungleWord} ${input} 🌴`;
+      resultEl.innerText = `🌴 ${jungleName} 🌴`;
       setTimeout(() => {
         resultEl.style.opacity = 1;
       }, 50);
+
+      // Show Start button
+      setTimeout(() => {
+        document.getElementById('startSection').classList.remove('hidden');
+        document.getElementById('playerName').innerText = jungleName;
+      }, 1000);
+    }
+
+    function startQuiz() {
+      document.getElementById('nameSection').classList.add('hidden');
+      document.getElementById('startSection').classList.add('hidden');
+      document.getElementById('quizSection').classList.remove('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const container = document.getElementById('questionContainer');
+      const q = questions[currentQuestion];
+
+      container.innerHTML = `
+        <div class="question">${q.question}</div>
+        ${q.options.map((opt, i) => `
+          <div class="option">
+            <button onclick="checkAnswer(${i})">${opt}</button>
+          </div>`).join('')}
+      `;
+    }
+
+    function checkAnswer(selected) {
+      if (selected === questions[currentQuestion].answer) {
+        score++;
+        alert("🌟 Correct! You avoided the vines!");
+      } else {
+        alert("🐍 Oops! That’s not quite right.");
+      }
+
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById('quizSection').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
+      document.getElementById('resultScreen').innerHTML =
+        `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
+        (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
     }
   </script>
 </body>
