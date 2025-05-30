@@ -207,32 +207,39 @@
       }
     }
 
-    function showResults() {
-      document.getElementById('quizSection').classList.add('hidden');
-      document.getElementById('resultScreen').classList.remove('hidden');
-      document.getElementById('resultScreen').innerHTML =
-        `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
-        (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
+function showResults() {
+  document.getElementById('quizSection').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+  document.getElementById('resultScreen').innerHTML =
+    `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
+    (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
 
-      const realName = jungleName.split(" ")[1];
-      const payload = {
-  data: [[
-    realName,
-    jungleName,
-    `${score}/${questions.length}`,
-    new Date().toLocaleString()
-  ]]
-};
+  const realName = jungleName.split(" ")[1] || ""; // backup in case split fails
+
+  // ✅ Safe payload formatting
+  const payload = {
+    data: [
+      [
+        realName,
+        jungleName,
+        `${score}/${questions.length}`,
+        new Date().toLocaleString()
+      ]
+    ]
+  };
       fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/YHrkftqMKOUgyPfT", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(data => console.log("✅ Logged to sheet:", data))
-      .catch(err => console.error("❌ Logging error:", err));
-    }
-
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("✅ Logged to sheet:", data);
+  })
+  .catch(err => {
+    console.error("❌ Logging error:", err);
+  });
+}
     function updateVehicleProgress() {
       const progressPercent = (currentQuestion / questions.length) * 100;
       document.getElementById('vehicle').style.left = `${progressPercent}%`;
