@@ -72,41 +72,16 @@
   <div id="resultScreen" class="hidden"></div>
 
   <div id="jungleRoad">
-    <img id="vehicle" src="DJS_Camry_Passenger.png" alt="Jungle Jeep">
+    <img id="vehicle" src="DJS_Camry_Passenge.png" alt="Jungle Jeep">
   </div>
 
   <script>
     const jungleWords = ["Antelope", "Anole", "Amazon", "Acacia", "Agouti", "Aye-aye", "Armadillo", "Baboon", "Bamboo", "Banana", "Bongo", "Boa", "Bushbaby", "Bonobo", "Bromeliad", "Beetle", "Chimp", "Caiman", "Coconut", "Cocoa", "Coffee", "Croton", "Cassowary", "Civet", "Colobus", "Dugong", "Dragonfruit", "Durian", "Draco", "Dungbeetle", "Dahlia", "Elephant", "Eel", "Egret", "Eucalyptus", "Elderberry", "Eland", "Frog", "Fig", "Firefly", "Fiddleleaf", "Fossa", "Flyingfox", "Finch", "FernG", "Gorilla", "Gecko", "Guava", "Gibbon", "Gardenia", "Genet", "Grapefruit", "Hippo", "Hyena", "Hibiscus", "Howler", "Hornbill", "Hoya", "Harpy", "Iguana", "Ibis", "Impala", "Indianstar", "Ixora", "Jaguar", "Jungle", "Jackal", "Jacaranda", "Junglefowl", "Kinkajou", "Kingfisher", "Kapok", "Koala", "Kudu", "Leopard", "Lemur", "Lotus", "Lizard", "Lion", "Lime", "Lantana", "Mango", "Mandrill", "Monstera", "Mongoose", "Mangrove", "Mimosa", "MacaqueN", "Nyala", "Neem", "Nutmeg", "Numbat", "Noni", "Okapi", "Ocelot", "Olive", "Orchid", "Orangutan", "Owl", "Parrot", "Python", "Palm", "Papaya", "Passionfruit", "Plumeria", "Peacock", "Pangolin", "Quokka", "Quelea", "Quail", "Quassia", "QueenPalm", "Rhino", "Ratel", "Rattan", "Rambutan", "RainTree", "Redtail", "Sloth", "Snake", "Sunbear", "Sapodilla", "Soursop", "Sugarcane", "Serval", "Tiger", "Tamarin", "Tapir", "Toucan", "Tamarind", "Tortoise", "TrumpetTreeU", "Uakari", "Urchin", "UmbrellaTree", "Viper", "Vanilla", "Vervet", "Velvetleaf", "Vinegaroon", "Warthog", "Weaver", "Wildebeest", "Wildginger", "Wisteria", "Xerus", "Xantus", "Xanthosoma", "Yabby", "Yucca", "YlangYlang", "Yellowtail", "Zebra", "Zorilla", "Zebu", "Zinnia", "ZebraPlant"];
 
     const questions = [
-      {
-        question: "When a stop line is present at a stop sign, drivers must:",
-        options: [
-          "a) stop at the line",
-          "b) stop at a point that it is clear to see in all directions",
-          "c) stop only if pedestrians are in the crosswalk"
-        ],
-        answer: 0
-      },
-      {
-        question: "When approaching snow removal equipment, you should:",
-        options: [
-          "a) be aware of restricted visibility",
-          "b) be aware of flying sand and chunks of ice and snow",
-          "c) maintain a following distance of 100 feet",
-          "d) all of the above"
-        ],
-        answer: 3
-      },
-      {
-        question: "When making an emergency roadside stop, you should:",
-        options: [
-          "a) activate your four way flashers before pulling over to the side of the road",
-          "b) shift transmission to proper gear and set parking brake",
-          "c) leave the vehicle running when you exit the vehicle"
-        ],
-        answer: 0
-      }
+      { question: "When a stop line is present at a stop sign, drivers must:", options: ["a) stop at the line", "b) stop at a point that it is clear to see in all directions", "c) stop only if pedestrians are in the crosswalk"], answer: 0 },
+      { question: "When approaching snow removal equipment, you should:", options: ["a) be aware of restricted visibility", "b) be aware of flying sand and chunks of ice and snow", "c) maintain a following distance of 100 feet", "d) all of the above"], answer: 3 },
+      { question: "When making an emergency roadside stop, you should:", options: ["a) activate your four way flashers before pulling over to the side of the road", "b) shift transmission to proper gear and set parking brake", "c) leave the vehicle running when you exit the vehicle"], answer: 0 }
     ];
 
     const jungleSound = new Audio('monkey.mp3');
@@ -180,39 +155,38 @@
       }
     }
 
-    function showResults() {
-      document.getElementById('quizSection').classList.add('hidden');
-      document.getElementById('resultScreen').classList.remove('hidden');
-      document.getElementById('resultScreen').innerHTML =
-        `🩵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
-        (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
-
-      const realName = jungleName.split(" ")[1] || "";
-
-      const payload = {
-        data: [[
-          realName,
-          jungleName,
-          `${score}/${questions.length}`,
-          new Date().toLocaleString()
-        ]]
-      };
-
-      fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/YHrkftqMKOUgyPfT?tabId=Sheet1", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      })
-      .then(res => res.json())
-      .then(data => console.log("✅ Logged to sheet:", data))
-      .catch(err => console.error("❌ Logging error:", err));
-    }
-
     function updateVehicleProgress() {
       const progressPercent = (currentQuestion / questions.length) * 100;
       document.getElementById('vehicle').style.left = `${progressPercent}%`;
     }
+
+    function showResults() {
+      document.getElementById('quizSection').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
+      document.getElementById('resultScreen').innerHTML =
+        `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
+        (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
+
+      const realNameParts = jungleName.split(" ");
+      const realName = realNameParts.length > 1 ? realNameParts.slice(1).join(" ") : "Unknown";
+
+      const rows = [[realName, jungleName, `${score}/${questions.length}`, new Date().toLocaleString()]];
+
+      fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/WiGdKkkhAokumsMP?tabId=Sheet1", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rows)
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log("✅ Logged to sheet:", data);
+      })
+      .catch(err => {
+        console.error("❌ Logging error:", err);
+      });
+    }
   </script>
 </body>
 </html>
+
 
