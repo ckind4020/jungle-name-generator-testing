@@ -102,8 +102,8 @@
       const matches = jungleWords.filter(w => w[0].toUpperCase() === firstLetter);
       jungleName = (matches.length > 0 ? matches[Math.floor(Math.random() * matches.length)] : jungleWords[Math.floor(Math.random() * jungleWords.length)]) + " " + input;
 
-      jungleSound.currentTime = 0;
-      jungleSound.play();
+      //jungleSound.currentTime = 0;
+      //jungleSound.play();
 
       resultEl.style.opacity = 0;
       resultEl.innerText = `🌴 ${jungleName} 🌴`;
