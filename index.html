@@ -213,17 +213,36 @@
     }
 
     function showResults() {
-      document.getElementById('quizSection').classList.add('hidden');
-      document.getElementById('resultScreen').classList.remove('hidden');
-      document.getElementById('resultScreen').innerHTML =
-        `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
-        (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
-    }
+  document.getElementById('quizSection').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+  document.getElementById('resultScreen').innerHTML =
+    `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
+    (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
 
-    function updateVehicleProgress() {
-      const progressPercent = (currentQuestion / questions.length) * 100;
-      document.getElementById('vehicle').style.left = `${progressPercent}%`;
-    }
+  // 🔐 Real name = second word of jungle name (after space)
+  const realName = jungleName.split(" ")[1];
+
+  // 📝 Create the data payload
+  const payload = {
+    data: [[
+      realName,
+      jungleName,
+      `${score}/${questions.length}`,
+      new Date().toLocaleString()
+    ]]
+  };
+
+  // 🌐 Send it to your Google Sheet
+  fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/YHrkftqMKOUgyPfT", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json())
+  .then(data => console.log("✅ Logged to sheet:", data))
+  .catch(err => console.error("❌ Logging error:", err));
+}
+
   </script>
 </body>
 </html>
