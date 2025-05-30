@@ -34,8 +34,6 @@
       color: #0b6623;
       margin-top: 40px;
     }
-
-    /* Jungle road and vehicle */
     #jungleRoad {
       position: relative;
       height: 80px;
@@ -44,14 +42,13 @@
       border: 2px dashed #558b2f;
       overflow: hidden;
     }
-
     #vehicle {
-  position: absolute;
-  top: 10px;
-  left: 0%;
-  height: 60px;
-  transition: left 0.6s ease;
-}
+      position: absolute;
+      top: 10px;
+      left: 0%;
+      height: 60px;
+      transition: left 0.6s ease;
+    }
   </style>
 </head>
 <body>
@@ -74,11 +71,9 @@
 
   <div id="resultScreen" class="hidden"></div>
 
-  <!-- Jungle Road Progress -->
   <div id="jungleRoad">
-  <img id="vehicle" src="DJS_Camry_Passenger.png" alt="Jeep">
-</div>
-
+    <img id="vehicle" src="jeep.png" alt="Jungle Jeep">
+  </div>
 
   <script>
     const jungleWords = [
@@ -213,36 +208,36 @@
     }
 
     function showResults() {
-  document.getElementById('quizSection').classList.add('hidden');
-  document.getElementById('resultScreen').classList.remove('hidden');
-  document.getElementById('resultScreen').innerHTML =
-    `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
-    (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
+      document.getElementById('quizSection').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
+      document.getElementById('resultScreen').innerHTML =
+        `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
+        (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
 
-  // 🔐 Real name = second word of jungle name (after space)
-  const realName = jungleName.split(" ")[1];
+      const realName = jungleName.split(" ")[1];
+      const payload = {
+        data: [[
+          realName,
+          jungleName,
+          `${score}/${questions.length}`,
+          new Date().toLocaleString()
+        ]]
+      };
 
-  // 📝 Create the data payload
-  const payload = {
-    data: [[
-      realName,
-      jungleName,
-      `${score}/${questions.length}`,
-      new Date().toLocaleString()
-    ]]
-  };
+      fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/YHrkftqMKOUgyPfT", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => console.log("✅ Logged to sheet:", data))
+      .catch(err => console.error("❌ Logging error:", err));
+    }
 
-  // 🌐 Send it to your Google Sheet
-  fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/YHrkftqMKOUgyPfT", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  })
-  .then(res => res.json())
-  .then(data => console.log("✅ Logged to sheet:", data))
-  .catch(err => console.error("❌ Logging error:", err));
-}
-
+    function updateVehicleProgress() {
+      const progressPercent = (currentQuestion / questions.length) * 100;
+      document.getElementById('vehicle').style.left = `${progressPercent}%`;
+    }
   </script>
 </body>
 </html>
