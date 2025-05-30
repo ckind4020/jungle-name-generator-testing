@@ -72,7 +72,7 @@
   <div id="resultScreen" class="hidden"></div>
 
   <div id="jungleRoad">
-    <img id="vehicle" src="DJS_Camry_Passenge.png" alt="Jungle Jeep">
+    <img id="vehicle" src="DJS_Camry_Passenger.png" alt="Jungle Jeep">
   </div>
 
   <script>
@@ -228,18 +228,15 @@ function showResults() {
     ]
   };
       fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/YHrkftqMKOUgyPfT", {
-        method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
+     method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    data: [["Test Name", "Jungle Test", "3/3", "5/29/2025 12:34 PM"]]
   })
-  .then(res => res.json())
-  .then(data => {
-    console.log("✅ Logged to sheet:", data);
-  })
-  .catch(err => {
-    console.error("❌ Logging error:", err);
-  });
-}
+})
+.then(res => res.json())
+.then(data => console.log("✅ Logged to sheet:", data))
+.catch(err => console.error("❌ Logging error:", err));
     function updateVehicleProgress() {
       const progressPercent = (currentQuestion / questions.length) * 100;
       document.getElementById('vehicle').style.left = `${progressPercent}%`;
