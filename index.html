@@ -72,117 +72,147 @@
   <div id="resultScreen" class="hidden"></div>
 
   <div id="jungleRoad">
-    <img id="vehicle" src="DJS_Camry_Passenge.png" alt="Jungle Jeep">
+    <img id="vehicle" src="DJS_Camry_Passenger.png" alt="Jungle Jeep">
   </div>
 
   <script>
-  const jungleWords = [...]; // KEEP your full jungleWords list from above
+    const jungleWords = ["Antelope", "Anole", "Amazon", "Acacia", "Agouti", "Aye-aye", "Armadillo", "Baboon", "Bamboo", "Banana", "Bongo", "Boa", "Bushbaby", "Bonobo", "Bromeliad", "Beetle", "Chimp", "Caiman", "Coconut", "Cocoa", "Coffee", "Croton", "Cassowary", "Civet", "Colobus", "Dugong", "Dragonfruit", "Durian", "Draco", "Dungbeetle", "Dahlia", "Elephant", "Eel", "Egret", "Eucalyptus", "Elderberry", "Eland", "Frog", "Fig", "Firefly", "Fiddleleaf", "Fossa", "Flyingfox", "Finch", "FernG", "Gorilla", "Gecko", "Guava", "Gibbon", "Gardenia", "Genet", "Grapefruit", "Hippo", "Hyena", "Hibiscus", "Howler", "Hornbill", "Hoya", "Harpy", "Iguana", "Ibis", "Impala", "Indianstar", "Ixora", "Jaguar", "Jungle", "Jackal", "Jacaranda", "Junglefowl", "Kinkajou", "Kingfisher", "Kapok", "Koala", "Kudu", "Leopard", "Lemur", "Lotus", "Lizard", "Lion", "Lime", "Lantana", "Mango", "Mandrill", "Monstera", "Mongoose", "Mangrove", "Mimosa", "MacaqueN", "Nyala", "Neem", "Nutmeg", "Numbat", "Noni", "Okapi", "Ocelot", "Olive", "Orchid", "Orangutan", "Owl", "Parrot", "Python", "Palm", "Papaya", "Passionfruit", "Plumeria", "Peacock", "Pangolin", "Quokka", "Quelea", "Quail", "Quassia", "QueenPalm", "Rhino", "Ratel", "Rattan", "Rambutan", "RainTree", "Redtail", "Sloth", "Snake", "Sunbear", "Sapodilla", "Soursop", "Sugarcane", "Serval", "Tiger", "Tamarin", "Tapir", "Toucan", "Tamarind", "Tortoise", "TrumpetTreeU", "Uakari", "Urchin", "UmbrellaTree", "Viper", "Vanilla", "Vervet", "Velvetleaf", "Vinegaroon", "Warthog", "Weaver", "Wildebeest", "Wildginger", "Wisteria", "Xerus", "Xantus", "Xanthosoma", "Yabby", "Yucca", "YlangYlang", "Yellowtail", "Zebra", "Zorilla", "Zebu", "Zinnia", "ZebraPlant"];
 
-  const questions = [...]; // KEEP your full questions list from above
+    const questions = [
+      {
+        question: "When a stop line is present at a stop sign, drivers must:",
+        options: [
+          "a) stop at the line",
+          "b) stop at a point that it is clear to see in all directions",
+          "c) stop only if pedestrians are in the crosswalk"
+        ],
+        answer: 0
+      },
+      {
+        question: "When approaching snow removal equipment, you should:",
+        options: [
+          "a) be aware of restricted visibility",
+          "b) be aware of flying sand and chunks of ice and snow",
+          "c) maintain a following distance of 100 feet",
+          "d) all of the above"
+        ],
+        answer: 3
+      },
+      {
+        question: "When making an emergency roadside stop, you should:",
+        options: [
+          "a) activate your four way flashers before pulling over to the side of the road",
+          "b) shift transmission to proper gear and set parking brake",
+          "c) leave the vehicle running when you exit the vehicle"
+        ],
+        answer: 0
+      }
+    ];
 
-  const jungleSound = new Audio('monkey.mp3');
-  let jungleName = "";
-  let currentQuestion = 0;
-  let score = 0;
+    const jungleSound = new Audio('monkey.mp3');
+    let jungleName = "";
+    let currentQuestion = 0;
+    let score = 0;
 
-  function generateJungleName() {
-    const input = document.getElementById('realName').value.trim();
-    const resultEl = document.getElementById('jungleName');
+    function generateJungleName() {
+      const input = document.getElementById('realName').value.trim();
+      const resultEl = document.getElementById('jungleName');
 
-    if (!input) {
-      alert("Please enter your name.");
-      return;
+      if (!input) {
+        alert("Please enter your name.");
+        return;
+      }
+
+      const firstLetter = input[0].toUpperCase();
+      const matches = jungleWords.filter(w => w[0].toUpperCase() === firstLetter);
+      jungleName = (matches.length > 0 ? matches[Math.floor(Math.random() * matches.length)] : jungleWords[Math.floor(Math.random() * jungleWords.length)]) + " " + input;
+
+      jungleSound.currentTime = 0;
+      jungleSound.play();
+
+      resultEl.style.opacity = 0;
+      resultEl.innerText = `🌴 ${jungleName} 🌴`;
+      setTimeout(() => {
+        resultEl.style.opacity = 1;
+      }, 50);
+
+      setTimeout(() => {
+        document.getElementById('startSection').classList.remove('hidden');
+        document.getElementById('playerName').innerText = jungleName;
+      }, 1000);
     }
 
-    const firstLetter = input[0].toUpperCase();
-    const matches = jungleWords.filter(w => w[0].toUpperCase() === firstLetter);
-    jungleName = (matches.length > 0 ? matches[Math.floor(Math.random() * matches.length)] : jungleWords[Math.floor(Math.random() * jungleWords.length)]) + " " + input;
-
-    jungleSound.currentTime = 0;
-    jungleSound.play();
-
-    resultEl.style.opacity = 0;
-    resultEl.innerText = `🌴 ${jungleName} 🌴`;
-    setTimeout(() => {
-      resultEl.style.opacity = 1;
-    }, 50);
-
-    setTimeout(() => {
-      document.getElementById('startSection').classList.remove('hidden');
-      document.getElementById('playerName').innerText = jungleName;
-    }, 1000);
-  }
-
-  function startQuiz() {
-    document.getElementById('nameSection').classList.add('hidden');
-    document.getElementById('startSection').classList.add('hidden');
-    document.getElementById('quizSection').classList.remove('hidden');
-    showQuestion();
-  }
-
-  function showQuestion() {
-    const container = document.getElementById('questionContainer');
-    const q = questions[currentQuestion];
-
-    container.innerHTML = `
-      <div class="question">${q.question}</div>
-      ${q.options.map((opt, i) => `
-        <div class="option">
-          <button onclick="checkAnswer(${i})">${opt}</button>
-        </div>`).join('')}
-    `;
-  }
-
-  function checkAnswer(selected) {
-    if (selected === questions[currentQuestion].answer) {
-      score++;
-      alert("🌟 Correct! You avoided the vines!");
-    } else {
-      alert("🐍 Oops! That’s not quite right.");
-    }
-
-    currentQuestion++;
-    updateVehicleProgress();
-
-    if (currentQuestion < questions.length) {
+    function startQuiz() {
+      document.getElementById('nameSection').classList.add('hidden');
+      document.getElementById('startSection').classList.add('hidden');
+      document.getElementById('quizSection').classList.remove('hidden');
       showQuestion();
-    } else {
-      showResults();
     }
-  }
 
-  function showResults() {
-    document.getElementById('quizSection').classList.add('hidden');
-    document.getElementById('resultScreen').classList.remove('hidden');
-    document.getElementById('resultScreen').innerHTML =
-      `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
-      (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
+    function showQuestion() {
+      const container = document.getElementById('questionContainer');
+      const q = questions[currentQuestion];
 
-    const realName = jungleName.split(" ")[1] || "";
+      container.innerHTML = `
+        <div class="question">${q.question}</div>
+        ${q.options.map((opt, i) => `
+          <div class="option">
+            <button onclick="checkAnswer(${i})">${opt}</button>
+          </div>`).join('')}
+      `;
+    }
 
-    const payload = {
-      data: [[
-        realName,
-        jungleName,
-        `${score}/${questions.length}`,
-        new Date().toLocaleString()
-      ]]
-    };
+    function checkAnswer(selected) {
+      if (selected === questions[currentQuestion].answer) {
+        score++;
+        alert("🌟 Correct! You avoided the vines!");
+      } else {
+        alert("🐍 Oops! That’s not quite right.");
+      }
 
-    fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/YHrkftqMKOUgyPfT?tabId=Sheet1", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-    .then(res => res.json())
-    .then(data => console.log("✅ Logged to sheet:", data))
-    .catch(err => console.error("❌ Logging error:", err));
-  }
+      currentQuestion++;
+      updateVehicleProgress();
 
-  function updateVehicleProgress() {
-    const progressPercent = (currentQuestion / questions.length) * 100;
-    document.getElementById('vehicle').style.left = `${progressPercent}%`;
-  }
-</script>
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      document.getElementById('quizSection').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
+      document.getElementById('resultScreen').innerHTML =
+        `🩵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
+        (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
+
+      const realName = jungleName.split(" ")[1] || "";
+
+      const payload = {
+        data: [[
+          realName,
+          jungleName,
+          `${score}/${questions.length}`,
+          new Date().toLocaleString()
+        ]]
+      };
+
+      fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/YHrkftqMKOUgyPfT?tabId=Sheet1", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => console.log("✅ Logged to sheet:", data))
+      .catch(err => console.error("❌ Logging error:", err));
+    }
+
+    function updateVehicleProgress() {
+      const progressPercent = (currentQuestion / questions.length) * 100;
+      document.getElementById('vehicle').style.left = `${progressPercent}%`;
+    }
+  </script>
 </body>
 </html>
+
