@@ -216,12 +216,12 @@
 
       const realName = jungleName.split(" ")[1];
       const payload = {
-  data: [
+  data: [[
     realName,
     jungleName,
     `${score}/${questions.length}`,
     new Date().toLocaleString()
-  ]
+  ]]
 };
       fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/YHrkftqMKOUgyPfT", {
         method: "POST",
