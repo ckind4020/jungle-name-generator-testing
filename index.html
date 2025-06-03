@@ -81,12 +81,48 @@
     const jungleWords = ["Antelope", "Anole", "Amazon", "Acacia", "Agouti", "Aye-aye", "Armadillo", "Baboon", "Bamboo", "Banana", "Bongo", "Boa", "Bushbaby", "Bonobo", "Bromeliad", "Beetle", "Chimp", "Caiman", "Coconut", "Cocoa", "Coffee", "Croton", "Cassowary", "Civet", "Colobus", "Dugong", "Dragonfruit", "Durian", "Draco", "Dungbeetle", "Dahlia", "Elephant", "Eel", "Egret", "Eucalyptus", "Elderberry", "Eland", "Frog", "Fig", "Firefly", "Fiddleleaf", "Fossa", "Flyingfox", "Finch", "FernG", "Gorilla", "Gecko", "Guava", "Gibbon", "Gardenia", "Genet", "Grapefruit", "Hippo", "Hyena", "Hibiscus", "Howler", "Hornbill", "Hoya", "Harpy", "Iguana", "Ibis", "Impala", "Indianstar", "Ixora", "Jaguar", "Jungle", "Jackal", "Jacaranda", "Junglefowl", "Kinkajou", "Kingfisher", "Kapok", "Koala", "Kudu", "Leopard", "Lemur", "Lotus", "Lizard", "Lion", "Lime", "Lantana", "Mango", "Mandrill", "Monstera", "Mongoose", "Mangrove", "Mimosa", "MacaqueN", "Nyala", "Neem", "Nutmeg", "Numbat", "Noni", "Okapi", "Ocelot", "Olive", "Orchid", "Orangutan", "Owl", "Parrot", "Python", "Palm", "Papaya", "Passionfruit", "Plumeria", "Peacock", "Pangolin", "Quokka", "Quelea", "Quail", "Quassia", "QueenPalm", "Rhino", "Ratel", "Rattan", "Rambutan", "RainTree", "Redtail", "Sloth", "Snake", "Sunbear", "Sapodilla", "Soursop", "Sugarcane", "Serval", "Tiger", "Tamarin", "Tapir", "Toucan", "Tamarind", "Tortoise", "TrumpetTreeU", "Uakari", "Urchin", "UmbrellaTree", "Viper", "Vanilla", "Vervet", "Velvetleaf", "Vinegaroon", "Warthog", "Weaver", "Wildebeest", "Wildginger", "Wisteria", "Xerus", "Xantus", "Xanthosoma", "Yabby", "Yucca", "YlangYlang", "Yellowtail", "Zebra", "Zorilla", "Zebu", "Zinnia", "ZebraPlant"];
 
     const questions = [
-      { question: "When a stop line is present at a stop sign, drivers must:", options: ["a) stop at the line", "b) stop at a point that it is clear to see in all directions", "c) stop only if pedestrians are in the crosswalk"], answer: 0 },
-      { question: "When approaching snow removal equipment, you should:", options: ["a) be aware of restricted visibility", "b) be aware of flying sand and chunks of ice and snow", "c) maintain a following distance of 100 feet", "d) all of the above"], answer: 3 },
-      { question: "When making an emergency roadside stop, you should:", options: ["a) activate your four way flashers before pulling over to the side of the road", "b) shift transmission to proper gear and set parking brake", "c) leave the vehicle running when you exit the vehicle"], answer: 0 }
+      {
+        question: "How confident are you in your driving abilities?",
+        options: [
+          { text: "I've never driven before", value: 3 },
+          { text: "I’ve driven a little with family/friends", value: 2 },
+          { text: "I feel pretty comfortable behind the wheel", value: 1 }
+        ]
+      },
+      {
+        question: "How much classroom instruction do you prefer?",
+        options: [
+          { text: "As much as possible—I learn best with explanation", value: 3 },
+          { text: "Some instruction, but mostly hands-on", value: 2 },
+          { text: "Minimal—I prefer learning by doing", value: 1 }
+        ]
+      },
+      {
+        question: "How soon are you planning to take the driving test?",
+        options: [
+          { text: "Within the next month", value: 1 },
+          { text: "In 2-3 months", value: 2 },
+          { text: "I'm in no rush—want to be fully prepared", value: 3 }
+        ]
+      },
+      {
+        question: "Have you ever taken a driving course before?",
+        options: [
+          { text: "No, this is my first time", value: 3 },
+          { text: "Yes, but I didn’t complete it", value: 2 },
+          { text: "Yes, and I just need a refresher", value: 1 }
+        ]
+      },
+      {
+        question: "What’s your biggest priority?",
+        options: [
+          { text: "Safety and thorough training", value: 3 },
+          { text: "Balancing cost and coverage", value: 2 },
+          { text: "Getting licensed quickly", value: 1 }
+        ]
+      }
     ];
 
-    const jungleSound = new Audio('monkey.mp3');
     let jungleName = "";
     let currentQuestion = 0;
     let score = 0;
@@ -103,9 +139,6 @@
       const firstLetter = input[0].toUpperCase();
       const matches = jungleWords.filter(w => w[0].toUpperCase() === firstLetter);
       jungleName = (matches.length > 0 ? matches[Math.floor(Math.random() * matches.length)] : jungleWords[Math.floor(Math.random() * jungleWords.length)]) + " " + input;
-
-      //jungleSound.currentTime = 0;
-      //jungleSound.play();
 
       resultEl.style.opacity = 0;
       resultEl.innerText = `🌴 ${jungleName} 🌴`;
@@ -132,21 +165,15 @@
 
       container.innerHTML = `
         <div class="question">${q.question}</div>
-        ${q.options.map((opt, i) => `
+        ${q.options.map(opt => `
           <div class="option">
-            <button onclick="checkAnswer(${i})">${opt}</button>
+            <button onclick="checkAnswer(${opt.value})">${opt.text}</button>
           </div>`).join('')}
       `;
     }
 
-    function checkAnswer(selected) {
-      if (selected === questions[currentQuestion].answer) {
-        score++;
-        alert("🌟 Correct! You avoided the vines!");
-      } else {
-        alert("🐍 Oops! That’s not quite right.");
-      }
-
+    function checkAnswer(value) {
+      score += value;
       currentQuestion++;
       updateVehicleProgress();
 
@@ -165,27 +192,18 @@
     function showResults() {
       document.getElementById('quizSection').classList.add('hidden');
       document.getElementById('resultScreen').classList.remove('hidden');
+
+      let packageType = "";
+      if (score >= 13) {
+        packageType = "🌟 Best Package: Comprehensive Training";
+      } else if (score >= 9) {
+        packageType = "🚗 Better Package: Balanced Learning";
+      } else {
+        packageType = "🏎 Good Package: Quick Start Option";
+      }
+
       document.getElementById('resultScreen').innerHTML =
-        `🪵 Great job, ${jungleName}!<br><br>You scored ${score} out of ${questions.length}.<br><br>` +
-        (score === questions.length ? "🌟 You’re a Jungle Pro Driver!" : "Keep training in the wild!");
-
-      const realNameParts = jungleName.split(" ");
-      const realName = realNameParts.length > 1 ? realNameParts.slice(1).join(" ") : "Unknown";
-
-      const rows = [[realName, jungleName, `${score}/${questions.length}`, new Date().toLocaleString()]];
-
-      fetch("https://v1.nocodeapi.com/ckind4020/google_sheets/WiGdKkkhAokumsMP?tabId=Sheet1", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(rows)
-      })
-      .then(res => res.json())
-      .then(data => {
-        console.log("✅ Logged to sheet:", data);
-      })
-      .catch(err => {
-        console.error("❌ Logging error:", err);
-      });
+        `🩵 Thanks, ${jungleName}!<br><br>Based on your answers, we recommend:<br><br><strong>${packageType}</strong>`;
     }
   </script>
 </body>
