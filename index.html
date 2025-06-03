@@ -30,7 +30,7 @@
       cursor: pointer;
     }
     #resultScreen {
-      font-size: 26px;
+      font-size: 20px;
       color: #0b6623;
       margin-top: 40px;
     }
@@ -74,7 +74,7 @@
   <div id="resultScreen" class="hidden"></div>
 
   <div id="jungleRoad">
-    <img id="vehicle" src="DJS_Camry_Passenger.png" alt="Jungle Jeep">
+    <img id="vehicle" src="DJS_Camry_Passenge.png" alt="Jungle Jeep">
   </div>
 
   <script>
@@ -193,20 +193,16 @@
       document.getElementById('quizSection').classList.add('hidden');
       document.getElementById('resultScreen').classList.remove('hidden');
 
-      let packageType = "";
-      if (score >= 13) {
-        packageType = "🌟 Best Package: Comprehensive Training";
-      } else if (score >= 9) {
-        packageType = "🚗 Better Package: Balanced Learning";
-      } else {
-        packageType = "🏎 Good Package: Quick Start Option";
-      }
-
-      document.getElementById('resultScreen').innerHTML =
-        `🩵 Thanks, ${jungleName}!<br><br>Based on your answers, we recommend:<br><br><strong>${packageType}</strong>`;
+      document.getElementById('resultScreen').innerHTML = `
+        🪵 Thanks, ${jungleName}!<br><br>
+        Based on your answers, here are your recommended options:<br><br>
+        <strong>Good Package:</strong> [Details coming soon]<br><br>
+        <strong>Better Package:</strong> [Details coming soon]<br><br>
+        <strong>Best Package:</strong> [Details coming soon]`;
     }
   </script>
 </body>
 </html>
+
 
 
